@@ -44,17 +44,16 @@ public class PhoneService {
     {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Phone> pagedResult = phoneRespository.findAll(paging);
-        
+        ArrayList<Phone> newPhonelist = new ArrayList<Phone>();
       
         if(pagedResult.hasContent()) {
 
-        	//List<Phone> phoneList = pagedResult.getContent();
-        	///pagedResult.getContent().stream().forEach(elem -> System.out.println("element " + elem));
         	for(int i = 0; i< pagedResult.getContent().size(); i++){
         		String singleNumber = pagedResult.getContent().get(i).getNumber();
         		if (singleNumber.substring(singleNumber.length() - 1) == "0" ||
         				singleNumber.substring(singleNumber.length() - 1) == "1"){
-        			return pagedResult.getContent();
+        			//return pagedResult.getContent();
+        			newPhonelist.add(pagedResult.getContent().get(i));
         		}
         		String[] letters = new String[] { };
         		switch(singleNumber.substring(singleNumber.length() - 1)) {
@@ -87,24 +86,16 @@ public class PhoneService {
         		}
         		
         		for(int l = 0; l< letters.length; l++){ 
-        			//String newNumber = singleNumber.substring(0,singleNumber.length() - 1) + letters[l] ;
+        			String newNumber = singleNumber.substring(0,singleNumber.length() - 1) + letters[l] ;
         			
-        			//System.out.println(newNumber);
-        			///phonelist.add(new Phone(newNumber));
-        			//Phone objt = new Phone(newNumber);
-        			//phoneList.add(new Phone(pagedResult.getContent().get(i).getId(),newNumber));
-        			 //phoneList.add(index, element);
-        			///phoneList.add(i, new Phone(pagedResult.getContent().get(i).getId(), newNumber));
-        			//pagedResult.getContent().add(pagedResult.getContent().get(i).getId(), new Phone(newNumber));
-        				//phoneList.add(1, new Phone(newNumber));
-        			//System.out.println(phoneList.add(i, new Phone(newNumber)));
+
+                  Phone newPhoneNumber = new Phone(pagedResult.getContent().get(i).getId(), newNumber);
+                  newPhonelist.add(newPhoneNumber);
         		}
         		
-        		//System.out.println((i+1) + " . " + pagedResult.getContent().get(i).getNumber().substring(pagedResult.getContent().get(i).getNumber().length() - 1)  + " . " + pagedResult.getContent().get(i).getId());
 
         	}
-        	//System.out.println(phoneList.isEmpty());
-           return pagedResult.getContent();
+        	return newPhonelist;
         } else {
             return new ArrayList<Phone>();
         }
