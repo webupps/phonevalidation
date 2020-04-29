@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,13 +24,14 @@ import com.consultnet.app.phonevalidator.model.Phone;
 import com.consultnet.app.phonevalidator.service.PhoneService;
 import com.consultnet.app.phonevalidator.service.PhoneValidatorService;
 
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/phone")
 public class PhoneController {
 	
 	@Autowired
 	private PhoneService phoneService;
+	
 	
 	@Autowired
 	private PhoneValidatorService phoneValidatorService;
@@ -39,6 +41,7 @@ public class PhoneController {
 		return "working";
     }
 	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/add")
 	public @ResponseBody Map<String,Boolean> addNewPhone(@Valid @RequestBody Phone obj) {			
 		if(phoneValidatorService.validatePhoneNumber(obj.getNumber())) {
